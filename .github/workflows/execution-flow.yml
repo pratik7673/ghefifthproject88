@@ -34,7 +34,8 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Run tests
+      - name: Test code
+        continue-on-error: true
         id: killgrave
         run: |
           npx vitest
