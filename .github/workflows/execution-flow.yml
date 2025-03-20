@@ -36,7 +36,7 @@ jobs:
         id: killgrave
         run: npm run test
       - name: Upload test report
-        if: steps.killgrave.outcome == 'failure'
+        if: failure() && steps.killgrave.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
           name: test-report
