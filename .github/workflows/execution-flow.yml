@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -19,6 +20,7 @@ jobs:
         run: npm ci
       - name: Lint code
         run: npm run lint
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -31,17 +33,18 @@ jobs:
           path: ~/.npm
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true' && steps.cache.outputs.cache-hit != ''
         run: npm ci
       - name: Test code
         id: killgrave
-        run: npm run test
+        run: npx vitest
       - name: Upload test report
-        if: failure() && steps.killgrave.outcome == 'failure'
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: test-report
           path: test.json
+
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -52,10 +55,10 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: node_modules
+          path: ~/.npm
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true' && steps.cache.outputs.cache-hit != ''
         run: npm ci
       - name: Build website
         id: build-website
@@ -65,6 +68,7 @@ jobs:
         with:
           name: dist-files
           path: dist
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -74,15 +78,16 @@ jobs:
         with:
           name: dist-files
       - name: Output contents
-        run: ls
+        run: ls -R
       - name: Deploy
         run: echo "Deploying..."
+
   reports:
-    needs: [lint,deploy]
-    if: always() || failure()
+    needs: [lint, deploy]
+    if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: echo
+      - name: Print Owner
         run: |
-         echo "test the killgrave"
-         echo ${{github.repository_owner}}
+          echo "test the killgrave"
+          echo ${{ github.repository_owner }}
