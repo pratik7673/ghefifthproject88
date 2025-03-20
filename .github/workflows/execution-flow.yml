@@ -19,6 +19,7 @@ jobs:
         run: npm ci
       - name: Lint code
         run: npm run lint
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -31,19 +32,20 @@ jobs:
           path: ~/.npm
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true' && steps.cache.outputs.cache-hit != ''
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Test code
+      - name: Run tests
         id: killgrave
         run: |
-         npx vitest
-         npm run test
+          npx vitest
+          npm run test
       - name: Upload test report
         if: failure() && steps.killgrave.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
           name: test-report
           path: test.json
+
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -57,7 +59,7 @@ jobs:
           path: ~/.npm
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true' && steps.cache.outputs.cache-hit != ''
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build website
         id: build-website
@@ -67,6 +69,7 @@ jobs:
         with:
           name: dist-files
           path: dist
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -76,15 +79,16 @@ jobs:
         with:
           name: dist-files
       - name: Output contents
-        run: ls
+        run: ls -la dist
       - name: Deploy
         run: echo "Deploying..."
+
   reports:
-    needs: [lint,deploy]
-    if: always() || failure()
+    needs: [lint, deploy]
+    if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: echo
+      - name: Generate report
         run: |
-         echo "test the killgrave"
-         echo ${{github.repository_owner}}
+          echo "Generating report..."
+          echo ${{ github.repository_owner }}
