@@ -9,8 +9,8 @@ jobs:
    with:
     artifact_name: "dist-files"
    secrets:
-    client_id: ${{secrets.dev-id}}
-    client_secrets: ${{secrets.dev-secrets}}
+    client_id: ${{secrets.DEVID}}
+    client_secrets: ${{secrets.DEVSECRETS}}
 
 
   
