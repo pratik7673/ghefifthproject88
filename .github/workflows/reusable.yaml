@@ -1,6 +1,12 @@
 name: CI/CD reusable
 on: 
  workflow_call:
+    secrets:
+       client_id:
+         required: true
+       client_secrets:
+         required: true
+       
     inputs:
        artifact_name:
         description: artifact-name
@@ -20,4 +26,8 @@ jobs:
             name: ${{ inputs.artifact_name }}
 
        - name: Output Information
-         run: echo "output information"
+         run: |
+          echo "output information"
+          echo ${{secrets.client_id}}
+          echo ${{secrets.client_secrets}}
+

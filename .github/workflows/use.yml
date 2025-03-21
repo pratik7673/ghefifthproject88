@@ -8,5 +8,9 @@ jobs:
    uses: ./.github/workflows/reusable.yaml
    with:
     artifact_name: "dist-files"
+   secrets:
+    client_id: ${{secrets.dev-id}}
+    client_secrets: ${{secrets.dev-secrets}}
+
 
   
