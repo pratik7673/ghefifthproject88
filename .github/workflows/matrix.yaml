@@ -1,0 +1,22 @@
+name: MATRIX pipe
+on: push
+jobs:
+  maxtrix_job:
+   strategy:
+     matrix:
+       node-version: [18,20,22]
+       operating-system: [ubuntu-latest, windows-latest]
+   runs-on: ${{ matrix.operating-system}}
+   steps:
+     - name: checkout code
+       uses: actions/checkout@v4
+     - name: install node version
+       uses: actions/setup-node@v4
+       with:
+        node-version: ${{matrix.node-version}}
+     - name: Install dependecy
+       run: npm ci
+     - name: Build application
+       run: npm run build
+
+
