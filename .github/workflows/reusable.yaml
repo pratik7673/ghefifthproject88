@@ -15,7 +15,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
        - name: checkout artifact
-         uses: actions/artifact@v4
+         uses: actions/artifact@v3
          with:
             name: ${{ inputs.artifact_name }}
 
