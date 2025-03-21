@@ -11,6 +11,12 @@ jobs:
    secrets:
     client_id: ${{secrets.DEVID}}
     client_secrets: ${{secrets.DEVSECRETS}}
+  print-deploy-result:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: print output
+        run: echo "${{needs.lint.outputs.results}}"
 
 
   

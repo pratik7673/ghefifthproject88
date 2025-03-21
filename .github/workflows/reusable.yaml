@@ -13,11 +13,19 @@ on:
         required: false
         type: string
         default: dist
+    outputs:
+       results:
+        description: operation output
+        value: ${{  jobs.reusable-job.outputs.outcome}}
+         
+
 
 
 
 jobs:
  reusable-job:
+    outputs:
+       outcome: ${{ steps.set-results.outputs.steps-results }}
     runs-on: [ubuntu-latest]
     steps:
        #- name: checkout artifact
@@ -25,9 +33,12 @@ jobs:
        #  with:
        #     name: ${{ inputs.artifact_name }}
 
-       - name: Output Information
+       - name: Output creds
          run: |
           echo "output information"
           echo ${{secrets.client_id}}
           echo ${{secrets.client_secrets}}
+       - name: output steps
+         id: set-results
+         run: echo "::set-output name=steps-results::success"
 
