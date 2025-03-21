@@ -1,0 +1,11 @@
+name: using reusable workflow
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    uses: ./github/workflows/reusable.yaml
+    
+
+ 
