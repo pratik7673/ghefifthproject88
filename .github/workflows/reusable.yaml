@@ -20,10 +20,10 @@ jobs:
  reusable-job:
     runs-on: [ubuntu-latest]
     steps:
-       - name: checkout artifact
-         uses: actions/download-artifact@v4
-         with:
-            name: ${{ inputs.artifact_name }}
+       #- name: checkout artifact
+       #  uses: actions/download-artifact@v4
+       #  with:
+       #     name: ${{ inputs.artifact_name }}
 
        - name: Output Information
          run: |
