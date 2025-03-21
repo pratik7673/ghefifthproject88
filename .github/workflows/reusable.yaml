@@ -40,5 +40,5 @@ jobs:
           echo ${{secrets.client_secrets}}
        - name: output steps
          id: set-results
-         run: echo "::set-output name=steps-results::success"
+         run: echo "::set-output name=steps-results::${{github.repository}}"
 
