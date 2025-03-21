@@ -1,8 +1,23 @@
 name: CI/CD reusable
-on: workflow_call
+on: 
+ workflow_call:
+    inputs:
+       artifact_name:
+        description: artifact-name
+        required: false
+        type: string
+        default: dist
+
+
+
 jobs:
  reusable-job:
     runs-on: [ubuntu-latest]
     steps:
+       - name: checkout artifact
+         uses: actions/artifact@v4
+         with:
+            name: ${{ inputs.artifact_name }}
+
        - name: Output Information
          run: echo "output information"

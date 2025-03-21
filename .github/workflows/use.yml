@@ -6,5 +6,7 @@ on:
 jobs:
   lint:
    uses: ./.github/workflows/reusable.yaml
+   with:
+    artifact_name: "dist-files"
 
   
