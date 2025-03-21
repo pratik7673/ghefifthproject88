@@ -1,11 +1,10 @@
-name: using reusable workflow
+name: Website Deployment
 on:
   push:
     branches:
       - main
 jobs:
-  deploy:
-    uses: ./github/workflows/reusable.yaml
-    
+  lint:
+   uses: ./.github/workflows/reusable.yaml
 
- 
+  
